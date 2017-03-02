@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<head>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"> </script>
+</head>
+<script>
+	var currentIndex = 1;
+	function printNews(jsonArray, newsCount){
+		var str = '';
+		for(i=1; i<newsCount;i++){
+			str+= "<li> <a href=displayNewsEntry.php?newsID="+jsonArray[i]['newsID']+"><h3>"+jsonArray[i]['headline']+"</h3></a></li>";
+			str+= '<li><p>'+jsonArray[i]['time']+'</p></li>';
+			str+= '<li><p>'+jsonArray[i]['content']+'</p></li>';
+		}
+		document.getElementById("newsList").innerHTML=str;
+	}
+	function pageIndexing(newsCount){
+		var indeces = Math.ceil(newsCount/5);
+		var str = '';
+		for(i=1; i<=indeces;i++){
+			if(i==currentIndex)
+				str+= "<li><a style='color: blue'><u><b><big><big>"+i+"</big></big></b></u></li>";
+			else
+				str+= "<li><a onclick='loadNewsList("+i+")'><u>"+i+"</u></li>";
+		}
+		document.getElementById("indexList").innerHTML=str;
+	}
+	function loadNewsList(pageindex){
+		currentIndex=pageindex;
+		var result = document.getElementById("searchTextBox").value;
+		var xmlhttp;
+		
+		if(window.XMLHttpRequest){
+			xmlhttp = new XMLHttpRequest();
+		}
+		else{
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange = function(){
+			if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+				var json = JSON.parse(xmlhttp.responseText);
+				printNews(json,json.length);
+				pageIndexing(json[0]['resultCount']);
+				if(json[0]['loginStatus'] == '1'){
+					document.getElementById("logout").style.visibility = "visible";
+					document.getElementById("login").style.visibility = "hidden";
+				}
+				else if(json[0]['loginStatus'] == '0'){
+					document.getElementById("login").style.visibility = "visible";
+					document.getElementById("logout").style.visibility = "hidden";
+				}
+			}
+		};
+		var url = "handleListDisplay.php?searchString="+result+"&pageIndex="+pageindex;
+		xmlhttp.open("GET",url,true);
+		xmlhttp.send();
+	}
+	
+	function logout(){
+		document.getElementById("login").style.visibility = "visible";
+		document.getElementById("logout").style.visibility = "hidden";
+		var xmlhttp;
+		if(window.XMLHttpRequest){
+			xmlhttp = new XMLHttpRequest();
+		}
+		else{
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+		}
+		var url = "handleLogout.php?";
+		xmlhttp.open("GET",url,true);
+		xmlhttp.send();
+		
+	}
+	$(document).ready(function(){
+		document.getElementById("login").style.visibility = "hidden";
+		document.getElementById("logout").style.visibility = "hidden";
+		loadNewsList(1);
+		$("#searchButton").click(function(){
+			loadNewsList(1);
+		});
+	});
+</script>
+<div class="header" id="header">
+<ul id="searchBar" style="list-style: none;">
+	<li><input class="submit" id ="searchTextBox" type="text" name="q"></li>
+	<li><input class="submit" id="searchButton" type="submit" value="Search news headlines"></li>
+	<li><a id="login" href="login.php">login</a></li>
+	<li><a id="logout" onclick="logout()">logout</a></li>
+</ul>
+</div>
+<div id="news">
+<ul id="newsList" style="list-style: none;">
+</ul>
+</div>
+<div class="indeces" id="pageindex">
+<ul id="indexList" style="list-style: none;">
+</ul>
+</div>

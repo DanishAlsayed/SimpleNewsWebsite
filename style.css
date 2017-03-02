@@ -1,0 +1,70 @@
+body {
+    background-color: AliceBlue;
+}
+.indeces {
+	display: table;
+	margin: 0 auto;
+}
+#pageindex ul{
+  list-style: none;
+}
+#pageindex li{
+	display: inline-block;
+	padding: 10px;
+}
+.header {
+	display: table;
+	margin: 0 auto;
+}
+#header li{
+	display: inline-block;
+	padding: 10px;
+}
+.newsDisplay{
+	display: table; 
+	margin: 0 auto;
+}
+#newsDisplay ul{
+	display: inline-block;
+	padding: 10px;
+}
+#newsDisplay li{
+	display: inline-block;
+	padding: 10px;
+}
+#comments li{
+	display: inline-block;
+	padding: 10px;
+}
+.newCommentsDiv{
+	display: table; 
+	margin: 0 auto;
+}
+.form{
+	display: table; 
+	margin: 0 auto;
+}
+#inputs li{
+	display: inline-block;
+	padding: 10px;
+}
+h3{
+	font: 18px Segoe UI;
+	font-weight: bold;
+	color: #757575;
+}
+p{
+	font: 13px Candara;
+}
+.submit {
+	background: #f8f8f8;
+	border: 1px solid #c6c6c6;
+	height: 36px;
+	font-family: Segoe UI;
+	font-size: 13px;
+	font-weight: bold;
+	text-align: center;
+	display: block;
+	margin: auto;
+	margin-top: 10px;
+}
